@@ -36,7 +36,8 @@ namespace AlunosApi
 
             services.AddControllers();
 
-            services.AddScoped<IAlunoService, IAlunoService>();
+            services.AddScoped<IAlunoService, AlunosService>();
+
 
             services.AddSwaggerGen(c =>
             {
