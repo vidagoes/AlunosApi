@@ -36,5 +36,49 @@ namespace AlunosApi.Controllers
             }
         }
 
+        [HttpGet("AlunosPorNome")]
+        public async Task<ActionResult<IAsyncEnumerable<Aluno>>> GetAlunosByNome([FromQuery]string nome)
+        {
+            try
+            {
+                var alunos = await _alunoService.GetAlunosByNome(nome);
+                
+                if(alunos == null)
+                
+                    return NotFound($"Não existem alunos com o critério {nome}");
+
+                return Ok(alunos);
+
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao obter alunos");
+            }
+        }
+
+
+
+        [HttpGet("{id:int}", Name="GetAluno")]
+        public async Task<ActionResult<Aluno>> GetAluno(int id)
+        {
+            try
+            {
+                var aluno = await _alunoService.GetAluno(id);
+
+                if (aluno == null)
+
+                    return NotFound($"Não existem aluno com id={id}");
+
+                return Ok(aluno);
+
+            }
+            catch
+            {
+                return BadRequest("Request inválido");
+            }
+        }
+
+
+
     }
 }
