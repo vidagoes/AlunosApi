@@ -78,7 +78,41 @@ namespace AlunosApi.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Create(Aluno aluno)
+        {
+            try
+            {
+                await _alunoService.CreateAluno(aluno);
+                return CreatedAtRoute(nameof(GetAluno), new { id = aluno.Id }, aluno);
+            }
+            catch
+            {
+                return BadRequest("Request inválido");
+            }
+        }
 
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
 
+                var aluno = await _alunoService.GetAluno(id);
+                if (aluno != null)
+                {
+                    _alunoService.DeleteAluno(aluno);
+                    return Ok($"Aluno de id={id} foi excluido com sucesso");
+                }
+                else
+                {
+                   return NotFound($"Aluno de id={id} não encontrado");    
+                 }
+            }
+            catch
+            {
+                return BadRequest("Request inválido");
+            }
+        }
     }
 }
